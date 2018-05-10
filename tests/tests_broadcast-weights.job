@@ -1,4 +1,0 @@
-#!/bin/bash
-
-# Change em1 to the network interface you want.
-mpirun -v --hostfile ../hostfile --mca btl_tcp_if_include em1 python -m doctest tests_broadcast-weights.py
