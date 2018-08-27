@@ -1,4 +1,4 @@
-#  Parallelizing Deep Neural Network using MPI and GPU
+#  Parallelizing Deep Learning using MPI and GPU
 
  * `mnist-nn.py`: 3-layer neural network as digit recognizer (MNIST).
  * `mnist-nn-gpu.py`: mnist-nn with GPU computing.
