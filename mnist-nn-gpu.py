@@ -195,18 +195,8 @@ if __name__ == '__main__':
     theta1 = weights['Theta1']  # size: 25 entries, each has 401 numbers
     theta2 = weights['Theta2']  # size: 10 entries, each has  26 numbers
 
-    # FIXME: Memory alignment issue in Scipy.
-    #   This issue leads Theano to complain that "The numpy.ndarray
-    #   object is not aligned. Theano C code does not support that."
-    #
-    #   Related discussion: http://stackoverflow.com/questions/36321400/strange-typeerror-with-theano/36323861
-    # workaround to avoid memory alignment error in Scipy
     theta1 = np.array(theta1)
     theta2 = np.array(theta2)
-    #print('theta1: {}'.format(theta1))
-    #print('theta1 flags: {}'.format(theta1.flags))
-    #print('theta2: {}'.format(theta2))
-    #print('theta2 flags: {}'.format(theta2.flags))
  
     cost, (theta1_grad, theta2_grad) = cost_function(theta1, theta2, Input_layer_size, Hidden_layer_size, Output_layer_size, inputs, labels, regular=0)
     print('cost:', cost)
