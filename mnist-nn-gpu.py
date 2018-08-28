@@ -2,14 +2,6 @@
 #
 # MNIST digit recognizer in GPU mode
 #
-# The simple recognizer is implememted purely in Python.  The purpose of
-# this program is to present the details how to constructa simple neural
-# network for prediction from scratch:
-#
-# 1. To build a 3-layer neural network (only one hidden layer).
-# 2. To train a model with self-implemented SGD (stochastic gradient descent).
-# 3. To predict data with the trained model.
-#
 
 import numpy as np
 import math
@@ -18,7 +10,6 @@ import scipy.io as sio
 import theano
 import theano.tensor as T
 import time
-
 
 # Structure of the 3-layer neural network.
 Input_layer_size = 400
@@ -105,14 +96,6 @@ def cost_function(theta1, theta2, input_layer_size, hidden_layer_size, output_la
     time_start = time.time()
     cost = 0.0
     for training_index in xrange(len(inputs)):
-        # transform label y[i] from a number to a vector.
-        #
-        # Note:
-        #   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        #    1  2  3  4  5  6  7  8  9 10
-        #
-        #   if y[i] is 0 -> [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
-        #   if y[i] is 1 -> [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         outputs = [0] * output_layer_size
         outputs[labels[training_index]-1] = 1
 
