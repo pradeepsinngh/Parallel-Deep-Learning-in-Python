@@ -61,33 +61,6 @@ def load_training_data(training_file='mnistdata.mat'):
     The training data is from Andrew Ng's exercise of the Coursera
     machine learning course (ex4data1.mat).
     '''
-    # FIXME: Endian issue
-    #   This issue leads an exception "KeyError: '<d'" in execution.
-    #
-    #   Workaround: indicate type of numpy array explicitly.
-    #
-    #   Reference:
-    #   https://groups.google.com/forum/#!searchin/mpi4py/%22%3Cd%22$20scipy/mpi4py/8gOVvT4ObvU/9gHKOl-jy88J
- 
-    # FIXME: Memory alignment of input matrices returned by
-    #        scipy.io.loadmat is false.
-    #
-    #   This issue leads Theano to complain that "The numpy.ndarray
-    #   object is not aligned.  Theano C code does not support that."
-    #
-    #   Workaround: ensure the numpy array to be aligned.
-    #
-    #   Reference:
-    #   http://stackoverflow.com/questions/36321400/strange-typeerror-with-theano/36323861
- 
-    # FIXME: Memory ordering of input matrices returned by
-    #        scipy.io.loadmat is Fortran-ordering.
-    #
-    #   This leads the potential issue that matrix operations might
-    #   return unexpected results.
-    #   
-    #   Current solution is to ensure the loaded external data to use
-    #   C-ordering, aka convert its ordering manually.
     training_data = sio.loadmat(training_file)
     inputs = training_data['X'].astype('f8')
     inputs = convert_memory_ordering_f2c(inputs)
@@ -166,14 +139,6 @@ def cost_function(theta1, theta2, input_layer_size, hidden_layer_size, output_la
     time_start = time.time()
     cost = 0.0
     for training_index in xrange(len(inputs)):
-        # transform label y[i] from a number to a vector.
-        #
-        # Note:
-        #   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        #    1  2  3  4  5  6  7  8  9 10
-        #
-        #   if y[i] is 0 -> [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
-        #   if y[i] is 1 -> [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         outputs = [0] * output_layer_size
         outputs[labels[training_index]-1] = 1
 
@@ -365,15 +330,6 @@ if __name__ == '__main__':
 
     # train the model from scratch and predict based on it
     model = train(inputs, labels, learningrate=0.1, iteration=60)
-
-    # Load pretrained weights for debugging precision.
-    # The precision will be around 97% (0.9756).
-    #weights = load_weights()
-    #theta1 = weights[0]  # size: 25 entries, each has 401 numbers
-    #theta2 = weights[1]  # size: 10 entries, each has  26 numbers
-    #model = (theta1, theta2)
-    #cost, (theta1_grad, theta2_grad) = cost_function(theta1, theta2, Input_layer_size, Hidden_layer_size, Output_layer_size, inputs, labels, regular=0)
-    #print('cost:', cost)
 
     outputs = predict(model, inputs)
 
